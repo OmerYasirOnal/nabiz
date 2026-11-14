@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nabız: free, open-source CPU & network monitor for the Mac menu bar</title>
+<meta name="description" content="Nabız is a free, open-source macOS menu bar system monitor. See CPU, memory, GPU, thermal state and network speed with live graphs. Sandboxed, no data collection.">
+<meta name="theme-color" content="#06080d">
+<link rel="canonical" href="https://omeryasironal.github.io/nabiz/">
+<link rel="alternate" hreflang="en" href="https://omeryasironal.github.io/nabiz/">
+<link rel="alternate" hreflang="tr" href="https://omeryasironal.github.io/nabiz/tr/">
+<link rel="alternate" hreflang="x-default" href="https://omeryasironal.github.io/nabiz/">
+<link rel="icon" href="images/favicon.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<meta property="og:type" content="website"><meta property="og:title" content="Nabız: free, open-source CPU & network monitor for the Mac menu bar"><meta property="og:description" content="Nabız is a free, open-source macOS menu bar system monitor. See CPU, memory, GPU, thermal state and network speed with live graphs. Sandboxed, no data collection.">
+<meta property="og:url" content="https://omeryasironal.github.io/nabiz/"><meta property="og:image" content="https://omeryasironal.github.io/nabiz/images/og.jpg"><meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Nabız: free, open-source CPU & network monitor for the Mac menu bar"><meta name="twitter:description" content="Nabız is a free, open-source macOS menu bar system monitor. See CPU, memory, GPU, thermal state and network speed with live graphs. Sandboxed, no data collection."><meta name="twitter:image" content="https://omeryasironal.github.io/nabiz/images/og.jpg">
+<script type="application/ld+json">[{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "Nabız", "alternateName": "Nabiz", "operatingSystem": "macOS 13+", "applicationCategory": "UtilitiesApplication", "description": "Nabız is a free, open-source macOS menu bar system monitor. See CPU, memory, GPU, thermal state and network speed with live graphs. Sandboxed, no data collection.", "url": "https://omeryasironal.github.io/nabiz/", "image": "https://omeryasironal.github.io/nabiz/images/og.jpg", "inLanguage": ["en", "tr"], "license": "https://opensource.org/licenses/MIT", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Ömer Yasir Önal"}, "codeRepository": "https://github.com/OmerYasirOnal/nabiz"}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Nabız free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Nabız is free and open source under the MIT license."}}, {"@type": "Question", "name": "Does Nabız collect any data?", "acceptedAnswer": {"@type": "Answer", "text": "No. It is fully sandboxed, makes no network requests and has no accounts, ads or analytics. Measurements stay on your Mac."}}, {"@type": "Question", "name": "Which Macs are supported?", "acceptedAnswer": {"@type": "Answer", "text": "Macs running macOS 13 Ventura or later, on both Apple silicon and Intel."}}, {"@type": "Question", "name": "Does it show CPU temperature and fan speed?", "acceptedAnswer": {"@type": "Answer", "text": "The Mac App Store version shows the macOS thermal state, since sandboxed store apps cannot read the sensor controller. The version you build from source can also read CPU temperature and fan speed."}}, {"@type": "Question", "name": "How much of the menu bar does it use?", "acceptedAnswer": {"@type": "Answer", "text": "Two narrow items with fixed widths. You can hide the network item or reduce the system item to a small pulse icon."}}]}]</script>
+<style>
+:root{--bg:#06080d;--bg2:#0d131d;--text:#f2f4f7;--dim:rgba(255,255,255,.62);--faint:rgba(255,255,255,.38);--line:rgba(255,255,255,.08);--surface:rgba(255,255,255,.04);--green:#3df5a0;--blue:#4cc9ff;--coral:#ff7a59}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);color-scheme:dark}
+body{font:16px/1.6 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;color:var(--text);background:radial-gradient(1200px 700px at 15% 85%,rgba(61,245,160,.10),transparent 60%),radial-gradient(1100px 700px at 90% 5%,rgba(76,201,255,.12),transparent 60%),linear-gradient(var(--bg2),var(--bg));min-height:100vh;-webkit-font-smoothing:antialiased}
+body:before{content:"";position:fixed;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;opacity:.35;pointer-events:none;mask-image:linear-gradient(#000,transparent 85%)}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px;position:relative}
+nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;text-decoration:none;letter-spacing:.2px}
+.brand img{width:32px;height:32px;border-radius:8px}
+nav .links{display:flex;gap:22px;font-size:14px}
+nav .links a{color:var(--dim);text-decoration:none}nav .links a:hover{color:var(--text)}
+.hero{display:grid;grid-template-columns:1fr 1.05fr;gap:48px;align-items:center;padding:56px 0 72px}
+.eyebrow{display:inline-flex;gap:8px;align-items:center;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--green);padding:6px 12px;border:1px solid rgba(61,245,160,.25);border-radius:999px;background:rgba(61,245,160,.06)}
+.eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:p 1.6s ease-in-out infinite}
+@keyframes p{50%{opacity:.3}}
+h1{font-size:clamp(40px,6vw,64px);line-height:1.04;letter-spacing:-1.8px;margin:22px 0 18px;font-weight:800}
+h1 span{background:linear-gradient(90deg,var(--green),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:18px;color:var(--dim);max-width:520px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0 14px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;border:1px solid var(--line);background:var(--surface)}
+.btn.primary{background:linear-gradient(90deg,var(--green),var(--blue));color:#04110b;border:0}
+.btn:hover{filter:brightness(1.08)}
+.req{font-size:13px;color:var(--faint)}
+.hero img{width:100%;border-radius:18px;border:1px solid var(--line);box-shadow:0 40px 90px rgba(0,0,0,.6)}
+section{padding:64px 0}
+h2{font-size:clamp(28px,4vw,38px);letter-spacing:-.8px;margin-bottom:28px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{padding:22px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.card h3{font-size:17px;margin-bottom:6px}
+.card p{color:var(--dim);font-size:14.5px}
+.card b{display:block;width:28px;height:3px;border-radius:2px;margin-bottom:14px;background:var(--green);box-shadow:0 0 12px var(--green)}
+.card:nth-child(2) b{background:var(--blue);box-shadow:0 0 12px var(--blue)}.card:nth-child(3) b{background:#ffb547;box-shadow:0 0 12px #ffb547}.card:nth-child(4) b{background:#b892ff;box-shadow:0 0 12px #b892ff}.card:nth-child(5) b{background:var(--coral);box-shadow:0 0 12px var(--coral)}
+.shots{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+figure img{width:100%;border-radius:14px;border:1px solid var(--line);display:block}
+figcaption{font-size:13px;color:var(--faint);margin-top:8px}
+pre{background:rgba(0,0,0,.45);border:1px solid var(--line);border-radius:14px;padding:18px 20px;overflow-x:auto;font:14px/1.6 ui-monospace,"SF Mono",Menlo,monospace;color:#d6ffe9}
+details{border-bottom:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;font-weight:600;font-size:16.5px;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"+";float:right;color:var(--faint)}details[open] summary:after{content:"−"}
+details p{color:var(--dim);margin-top:8px;max-width:760px}
+footer{padding:40px 0 56px;color:var(--faint);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;border-top:1px solid var(--line);margin-top:24px}
+footer a{color:var(--dim);text-decoration:none;margin-left:16px}
+@media(max-width:860px){.hero{grid-template-columns:1fr;padding-top:24px}.grid{grid-template-columns:1fr}.shots{grid-template-columns:1fr}nav .links a.hide{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><a class="brand" href="https://omeryasironal.github.io/nabiz/"><img src="images/icon.png" alt="" width="32" height="32">Nabız</a>
+<div class="links"><a class="hide" href="#faq">FAQ</a><a href="privacy.html">Privacy</a><a href="https://github.com/OmerYasirOnal/nabiz">GitHub</a><a href="tr/" hreflang="tr">Türkçe</a></div></nav>
+<header class="hero">
+<div><span class="eyebrow"><i></i>macOS menu bar monitor</span>
+<h1>Your Mac's pulse,<br><span>in the menu bar.</span></h1>
+<p class="lead">CPU, memory, GPU, thermal state and network speed with live graphs. Two compact menu bar items, each with its own panel. Free, open source and private.</p>
+<div class="cta"><a class="btn primary" href="https://github.com/OmerYasirOnal/nabiz">View source on GitHub</a><span class="btn">Coming soon to the Mac App Store</span></div>
+<p class="req">macOS 13 or later · Apple silicon and Intel · Turkish and English</p></div>
+<img src="images/en/hero.jpg" alt="Nabız" width="1600" height="1000">
+</header>
+<section><h2>Everything at a glance, nothing extra</h2><div class="grid"><div class="card"><b></b><h3>System panel</h3><p>CPU with a live graph split into apps and system, plus memory, GPU, thermal state, memory pressure, swap, free disk and the apps using the most CPU right now.</p></div><div class="card"><b></b><h3>Network panel</h3><p>Download and upload on one mirrored graph, average and peak speed, and traffic measured today and over the last 7 days.</p></div><div class="card"><b></b><h3>History, if you want it</h3><p>Optional per-minute summaries kept for 14 days on your Mac: see when it worked hardest and which apps were running.</p></div><div class="card"><b></b><h3>Takes little space</h3><p>Large, rounded numbers with a thin load bar. Fixed widths, so the menu bar never jumps.</p></div><div class="card"><b></b><h3>Private by design</h3><p>Fully sandboxed. No accounts, ads, analytics or network requests. Your data never leaves your Mac.</p></div><div class="card"><b></b><h3>Open source</h3><p>MIT licensed Swift and AppKit, no dependencies. Build it yourself in one command.</p></div></div></section>
+<section><h2>See it in action</h2><div class="shots"><figure><img src="images/en/01.jpg" alt="Nabız System panel" loading="lazy" width="1600" height="1000"><figcaption>System panel</figcaption></figure><figure><img src="images/en/02.jpg" alt="Nabız Network panel" loading="lazy" width="1600" height="1000"><figcaption>Network panel</figcaption></figure><figure><img src="images/en/04.jpg" alt="Nabız History" loading="lazy" width="1600" height="1000"><figcaption>History</figcaption></figure><figure><img src="images/en/05.jpg" alt="Nabız Settings" loading="lazy" width="1600" height="1000"><figcaption>Settings</figcaption></figure></div></section>
+<section id="build"><h2>Build from source</h2><p class="lead" style="margin-bottom:18px">Requires Xcode command line tools and a code signing identity (sandboxed apps need a stable identity).</p>
+<pre>git clone https://github.com/OmerYasirOnal/nabiz.git
+cd nabiz/app
+NABIZ_SIGN_IDENTITY="Apple Development: …" ./build.zsh
+open build/Nabiz.app</pre></section>
+<section id="faq"><h2>Questions</h2><details><summary>Is Nabız free?</summary><p>Yes. Nabız is free and open source under the MIT license.</p></details><details><summary>Does Nabız collect any data?</summary><p>No. It is fully sandboxed, makes no network requests and has no accounts, ads or analytics. Measurements stay on your Mac.</p></details><details><summary>Which Macs are supported?</summary><p>Macs running macOS 13 Ventura or later, on both Apple silicon and Intel.</p></details><details><summary>Does it show CPU temperature and fan speed?</summary><p>The Mac App Store version shows the macOS thermal state, since sandboxed store apps cannot read the sensor controller. The version you build from source can also read CPU temperature and fan speed.</p></details><details><summary>How much of the menu bar does it use?</summary><p>Two narrow items with fixed widths. You can hide the network item or reduce the system item to a small pulse icon.</p></details></section>
+<footer><span>Made in Istanbul by Ömer Yasir Önal · MIT License</span><span><a href="privacy.html">Privacy</a><a href="https://github.com/OmerYasirOnal/nabiz/issues">Support</a><a href="https://github.com/OmerYasirOnal/nabiz">GitHub</a></span></footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+build/
+build-appstore/
+appstore/
+*.provisionprofile
+*.p8
+.DS_Store
