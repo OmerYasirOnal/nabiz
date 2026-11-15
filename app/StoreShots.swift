@@ -24,7 +24,14 @@ func windowRep(_ w:NSWindow,dark:Bool)->NSBitmapImageRep {
     v.appearance=w.appearance
     v.effectiveAppearance.performAsCurrentDrawingAppearance{v.layer?.backgroundColor=NSColor.windowBackgroundColor.cgColor}
     v.layer?.cornerRadius=14
-    return hires(v)
+    let rep=hires(v)
+    // Pencere düğmeleri: başlık şeridi boş görünmesin.
+    NSGraphicsContext.saveGraphicsState();NSGraphicsContext.current=NSGraphicsContext(bitmapImageRep:rep)
+    for (i,c) in [NSColor(srgbRed:1,green:0.37,blue:0.34,alpha:1),NSColor(srgbRed:1,green:0.74,blue:0.18,alpha:1),NSColor(srgbRed:0.16,green:0.78,blue:0.25,alpha:1)].enumerated() {
+        c.setFill();NSBezierPath(ovalIn:NSRect(x:16+CGFloat(i)*20,y:rep.size.height-24,width:12,height:12)).fill()
+    }
+    NSGraphicsContext.restoreGraphicsState()
+    return rep
 }
 // 2880x1800 kompozisyon: koyu monitör zemini, üstte gerçek menü çubuğu öğeleri, solda başlık, sağda arayüz.
 let W=2880,H=1800
@@ -152,6 +159,6 @@ compose("01",title:L("Mac'inizin nabzı, menü çubuğunda","Your Mac's pulse, i
 compose("02",title:L("İndirme ve gönderme, ayrı ayrı","Download and upload, side by side"),subtitle:L("Canlı hız grafiği, bugün ve son 7 günün trafiği.","A live speed graph plus today's and the last 7 days' traffic."),images:[panelRep(net,dark:true)],menuHighlight:1)
 compose("03",title:L("İki öğe, iki panel","Two items, two panels"),subtitle:L("Menü çubuğunda az yer kaplar; her öğe kendi panelini açar.","Takes little menu bar space; each item opens its own panel."),images:[panelRep(sys,dark:true),panelRep(net,dark:true)],layout:.stack)
 compose("04",title:L("Mac'iniz ne zaman zorlandı?","When did your Mac work hardest?"),subtitle:L("İsteğe bağlı 14 günlük geçmiş, yalnız bu Mac'te saklanır.","Optional 14-day history, stored only on this Mac."),images:[windowRep(history.window!,dark:true)])
-compose("05",title:L("Sade ve sizin için ayarlı","Simple, and set up your way"),subtitle:L("Gösterge, uyarı eşiği ve yenileme aralığı. Veri toplama yok.","Display, alert threshold and refresh rate. No data collection."),images:[windowRep(settings.window!,dark:true)])
+compose("05",title:L("Sade ve sizin için ayarlı","Simple, and set up your way"),subtitle:L("Gösterge, uyarı ve yenileme. Veri toplanmaz.","Display, alerts and refresh. No data collection."),images:[windowRep(settings.window!,dark:true)])
 compose("hero",title:"",subtitle:"",images:[panelRep(sys,dark:true),panelRep(net,dark:true)],layout:.bare,menuHighlight:0)
 print("ok")

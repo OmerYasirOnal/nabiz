@@ -5,7 +5,7 @@ set -eu
 source_dir=${0:A:h}
 appstore=${NABIZ_APPSTORE:-0}
 version=1.6
-build_number=11
+build_number=12
 if [[ $appstore == 1 ]]; then
   output_dir=${NABIZ_BUILD_DIR:-"$source_dir/build-appstore"}
   bundle_id=${NABIZ_BUNDLE_ID:-com.omeryasir.nabiz}

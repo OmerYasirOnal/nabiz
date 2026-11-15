@@ -52,15 +52,15 @@ final class SettingsController:NSWindowController,NSWindowDelegate {
     var onOpenHistory:(()->Void)?
     var onClose:(()->Void)?
 
-    private let systemMode=NSSegmentedControl(labels:[L("CPU","CPU"),L("RAM","RAM"),L("Simge","Icon")],trackingMode:.selectOne,target:nil,action:nil)
-    private let networkMode=NSSegmentedControl(labels:[L("Hız","Speed"),L("Bugün","Today"),L("Gizli","Off")],trackingMode:.selectOne,target:nil,action:nil)
-    private let direction=NSSegmentedControl(labels:[L("Büyük olan","Higher"),"↓","↑"],trackingMode:.selectOne,target:nil,action:nil)
-    private let alert=NSSegmentedControl(labels:[L("Kapalı","Off")]+Prefs.thresholds.map{"\($0)%"},trackingMode:.selectOne,target:nil,action:nil)
-    private let interval=NSSegmentedControl(labels:Prefs.intervals.map{"\($0) "+L("sn","s")},trackingMode:.selectOne,target:nil,action:nil)
-    private let login=NSSwitch()
+    private let systemMode=PulseSegments(labels:[L("CPU","CPU"),L("RAM","RAM"),L("Simge","Icon")])
+    private let networkMode=PulseSegments(labels:[L("Hız","Speed"),L("Bugün","Today"),L("Gizli","Off")])
+    private let direction=PulseSegments(labels:[L("Büyük olan","Higher"),"↓","↑"])
+    private let alert=PulseSegments(labels:[L("Kapalı","Off")]+Prefs.thresholds.map{"\($0)%"})
+    private let interval=PulseSegments(labels:Prefs.intervals.map{"\($0) "+L("sn","s")})
+    private let login=PulseSwitch()
     private let loginNote=NSTextField(wrappingLabelWithString:"")
-    private let showOnLaunch=NSSwitch()
-    private let history=NSSwitch()
+    private let showOnLaunch=PulseSwitch()
+    private let history=PulseSwitch()
     private var directionRow:NSView!
     private let root=NSStackView()
 
@@ -74,8 +74,8 @@ final class SettingsController:NSWindowController,NSWindowDelegate {
         root.translatesAutoresizingMaskIntoConstraints=false;background.addSubview(root)
         NSLayoutConstraint.activate([root.leadingAnchor.constraint(equalTo:background.leadingAnchor,constant:20),root.topAnchor.constraint(equalTo:background.topAnchor,constant:40),root.widthAnchor.constraint(equalToConstant:Self.width)])
 
-        for control in [systemMode,networkMode,direction,alert,interval] {control.target=self;control.action=#selector(changed);control.controlSize = .small;control.segmentStyle = .rounded}
-        for control in [login,showOnLaunch,history] {control.target=self;control.controlSize = .small}
+        for control in [systemMode,networkMode,direction,alert,interval] {control.target=self;control.action=#selector(changed);}
+        for control in [login,showOnLaunch,history] {control.target=self}
         showOnLaunch.action=#selector(changed);login.action=#selector(toggleLogin);history.action=#selector(toggleHistory)
 
         let mark=NSImageView(image:NabizMark.image(size:24));mark.translatesAutoresizingMaskIntoConstraints=false

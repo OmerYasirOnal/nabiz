@@ -177,8 +177,8 @@ final class SummaryTile: NSView {
 
 final class HistoryController:NSWindowController,NSWindowDelegate {
     static let contentWidth:CGFloat=480
-    let enabled=NSSwitch()
-    let range=NSSegmentedControl(labels:[L("Bugün","Today"),L("7 gün","7 days"),L("14 gün","14 days")],trackingMode:.selectOne,target:nil,action:nil)
+    let enabled=PulseSwitch()
+    let range=PulseSegments(labels:[L("Bugün","Today"),L("7 gün","7 days"),L("14 gün","14 days")])
     private let strain=SummaryTile(HistoryTerms.tile,color:Vital.heat)
     private let hottest=SummaryTile(L("EN SICAK","HOTTEST"),color:Vital.heat)
     private let network=SummaryTile(L("AĞ","NETWORK"),color:Vital.down)

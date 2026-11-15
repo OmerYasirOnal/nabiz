@@ -17,6 +17,8 @@ enum Vital {
     static let faint=NSColor(white:1,alpha:0.34)
     static let surface=NSColor(white:1,alpha:0.045)
     static let line=NSColor(white:1,alpha:0.08)
+    /// Seçili bölüm (segmented) rengi: pencere etkin olmasa da seçim okunur.
+    static let accent=NSColor(srgbRed:0.16,green:0.47,blue:0.86,alpha:1)
 }
 
 /// Panellerin ortak eylemleri. AppDelegate bağlar; paneller yalnız gösterir.
@@ -505,4 +507,62 @@ enum NabizMark {
             return true
         }
     }
+}
+
+/// Nabız anahtarı: açıkken yeşil, kapalıyken sönük. Pencere etkin olmasa da durumu okunur.
+final class PulseSwitch: NSControl {
+    var state:NSControl.StateValue = .off {didSet{needsDisplay=true;setAccessibilityValue(state == .on ? 1:0)}}
+    override init(frame:NSRect){super.init(frame:frame);translatesAutoresizingMaskIntoConstraints=false
+        NSLayoutConstraint.activate([widthAnchor.constraint(equalToConstant:34),heightAnchor.constraint(equalToConstant:20)])
+        setAccessibilityElement(true);setAccessibilityRole(.checkBox)}
+    convenience init(){self.init(frame:.zero)}
+    required init?(coder:NSCoder){fatalError()}
+    override var intrinsicContentSize:NSSize {NSSize(width:34,height:20)}
+    override func draw(_ dirtyRect:NSRect) {
+        let on=state == .on,track=bounds.insetBy(dx:1,dy:1)
+        (on ? Vital.cpu.withAlphaComponent(0.85):NSColor(white:1,alpha:0.12)).setFill()
+        NSBezierPath(roundedRect:track,xRadius:track.height/2,yRadius:track.height/2).fill()
+        let d=track.height-4,knob=NSRect(x:on ? track.maxX-d-2:track.minX+2,y:track.minY+2,width:d,height:d)
+        (on ? NSColor(srgbRed:0.02,green:0.09,blue:0.06,alpha:1):NSColor(white:1,alpha:0.75)).setFill()
+        NSBezierPath(ovalIn:knob).fill()
+    }
+    override func mouseDown(with event:NSEvent){state = state == .on ? .off:.on;sendAction(action,to:target)}
+    override func accessibilityPerformPress()->Bool{mouseDown(with:NSEvent());return true}
+    override func acceptsFirstMouse(for event:NSEvent?)->Bool{true}
+}
+
+/// Nabız bölümlü seçici: kapsül iz, seçili bölüm yeşil dolgulu.
+final class PulseSegments: NSControl {
+    let labels:[String]
+    var selectedSegment=0 {didSet{needsDisplay=true;setAccessibilityValue(labels.indices.contains(selectedSegment) ? labels[selectedSegment]:"")}}
+    private let labelFont=NSFont.systemFont(ofSize:11.5,weight:.semibold)
+    private var widths:[CGFloat] {labels.map{ceil(NSAttributedString(string:$0,attributes:[.font:labelFont]).size().width)+20}}
+    init(labels:[String]){self.labels=labels;super.init(frame:.zero);translatesAutoresizingMaskIntoConstraints=false
+        setAccessibilityElement(true);setAccessibilityRole(.radioGroup)}
+    required init?(coder:NSCoder){fatalError()}
+    override var intrinsicContentSize:NSSize {NSSize(width:widths.reduce(4,+),height:22)}
+    private func rects()->[NSRect] {
+        var x:CGFloat=2;return widths.map{w in defer{x+=w};return NSRect(x:x,y:2,width:w,height:bounds.height-4)}
+    }
+    override func draw(_ dirtyRect:NSRect) {
+        let track=bounds.insetBy(dx:0.5,dy:0.5)
+        NSColor(white:1,alpha:0.06).setFill();let tp=NSBezierPath(roundedRect:track,xRadius:track.height/2,yRadius:track.height/2);tp.fill()
+        Vital.line.setStroke();tp.lineWidth=1;tp.stroke()
+        for (i,r) in rects().enumerated() {
+            let selected=i==selectedSegment
+            if selected {
+                Vital.cpu.withAlphaComponent(0.2).setFill()
+                let p=NSBezierPath(roundedRect:r,xRadius:r.height/2,yRadius:r.height/2);p.fill()
+                Vital.cpu.withAlphaComponent(0.55).setStroke();p.lineWidth=1;p.stroke()
+            }
+            let s=NSAttributedString(string:labels[i],attributes:[.font:labelFont,.foregroundColor:selected ? Vital.cpu:Vital.dim])
+            let size=s.size();s.draw(at:NSPoint(x:r.midX-size.width/2,y:r.midY-size.height/2))
+        }
+    }
+    override func mouseDown(with event:NSEvent) {
+        let p=convert(event.locationInWindow,from:nil)
+        guard let i=rects().firstIndex(where:{$0.contains(p)}),i != selectedSegment else {return}
+        selectedSegment=i;sendAction(action,to:target)
+    }
+    override func acceptsFirstMouse(for event:NSEvent?)->Bool{true}
 }

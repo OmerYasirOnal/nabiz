@@ -42,9 +42,9 @@ final class MenuMeter: NSView {
             let line=NSMutableAttributedString(string:number,attributes:[.font:Self.valueFont,.foregroundColor:tint])
             if number != "—" {line.append(NSAttributedString(string:"%",attributes:[.font:Self.percentFont,.foregroundColor:tint.withAlphaComponent(0.75)]))}
             let size=line.size()
-            line.draw(at:NSPoint(x:(bounds.width-size.width)/2,y:offset+7.5+Self.valueFont.descender))
+            line.draw(at:NSPoint(x:(bounds.width-size.width)/2,y:offset+8.5+Self.valueFont.descender))
             // İnce gösterge: RAM modunda dört bölmeli, CPU modunda düz.
-            let track=NSRect(x:3,y:offset+3,width:bounds.width-6,height:2.5)
+            let track=NSRect(x:3,y:offset+2.5,width:bounds.width-6,height:2.5)
             foreground.withAlphaComponent(0.18).setFill()
             NSBezierPath(roundedRect:track,xRadius:1.25,yRadius:1.25).fill()
             if let level {
@@ -65,8 +65,8 @@ final class MenuMeter: NSView {
         let amount=parts.count==2 ? parts[1]:traffic
         let unitStart=amount.firstIndex(where:{$0.isLetter}) ?? amount.endIndex
         let number=String(amount[..<unitStart]),unit=String(amount[unitStart...])
-        centered(number,font:Self.valueFont,color:valueColor,baseline:offset+8.5)
-        centered([direction,unit].filter{!$0.isEmpty}.joined(separator:" "),font:Self.unitFont,color:secondary,baseline:offset+1.5)
+        centered(number,font:Self.valueFont,color:valueColor,baseline:offset+9.5)
+        centered([direction,unit].filter{!$0.isEmpty}.joined(separator:" "),font:Self.unitFont,color:secondary,baseline:offset+1.25)
     }
 
     private func centered(_ value:String,font:NSFont,color:NSColor,baseline:CGFloat) {
